@@ -1,9 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TreeRepository } from 'typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { CommentEntity } from './entities/comment.entity';
 import { CreateCommentDto } from './dtos/create-comment.dto';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class CommentsService {
@@ -12,15 +14,13 @@ export class CommentsService {
     private userRepository: TreeRepository<UserEntity>,
     @InjectRepository(CommentEntity)
     private commentRepository: TreeRepository<CommentEntity>,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
-  async createComment(
-    dto: CreateCommentDto,
-    userId: number,
-  ): Promise<CommentEntity> {
-    const { content, parentId } = dto;
+  async createComment(createCommentDto: CreateCommentDto, userId: number) {
+    const { content, parentId } = createCommentDto;
 
-    const author = await this.userRepository.findOne({ where: { id: userId } });
+    const author = await this.userRepository.findOneBy({ id: userId });
 
     if (!author) {
       throw new NotFoundException('User not found');
@@ -31,19 +31,30 @@ export class CommentsService {
     comment.author = author;
 
     if (parentId) {
-      const parent = await this.commentRepository.findOne({
-        where: { id: parentId },
+      const parentComment = await this.commentRepository.findOneBy({
+        id: parentId,
       });
-      if (!parent) {
+
+      if (!parentComment) {
         throw new NotFoundException('Parent comment not found');
       }
-      comment.parent = parent;
+
+      comment.parent = parentComment;
     }
 
     return this.commentRepository.save(comment);
   }
 
-  async getAllComments(): Promise<CommentEntity[]> {
-    return this.commentRepository.findTrees();
+  async getAllComments() {
+    let comments = await this.cacheManager.get<CommentEntity[]>('all_comments');
+
+    if (!comments) {
+      comments = await this.commentRepository.findTrees({
+        relations: ['author'],
+      });
+      await this.cacheManager.set('all_comments', comments, 60);
+    }
+
+    return comments;
   }
 }

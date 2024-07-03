@@ -5,6 +5,8 @@ import { Environment } from './shared/variables/environment';
 import { AuthModule } from './auth/auth.module';
 import { FileModule } from './file/file.module';
 import { CommentsModule } from './comments/comments.module';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -13,7 +15,9 @@ import { CommentsModule } from './comments/comments.module';
       database: Environment.DATABASE,
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
-      logging: true,
+    }),
+    CacheModule.register({
+      isGlobal: true,
     }),
     UsersModule,
     AuthModule,
@@ -21,6 +25,11 @@ import { CommentsModule } from './comments/comments.module';
     CommentsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class RootModule {}

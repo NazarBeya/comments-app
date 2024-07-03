@@ -40,6 +40,8 @@ export class AuthService {
 
     const token = await this.issueAccessToken(user.id);
 
+    console.log('create');
+
     return {
       user,
       ...token,
