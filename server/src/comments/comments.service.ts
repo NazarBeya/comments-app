@@ -6,6 +6,7 @@ import { CommentEntity } from './entities/comment.entity';
 import { CreateCommentDto } from './dtos/create-comment.dto';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { Server } from 'socket.io';
 
 @Injectable()
 export class CommentsService {
@@ -17,7 +18,11 @@ export class CommentsService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
-  async createComment(createCommentDto: CreateCommentDto, userId: number) {
+  async createComment(
+    createCommentDto: CreateCommentDto,
+    userId: number,
+    server: Server,
+  ) {
     const { content, parentId } = createCommentDto;
 
     const author = await this.userRepository.findOneBy({ id: userId });
@@ -42,7 +47,8 @@ export class CommentsService {
       comment.parent = parentComment;
     }
 
-    return this.commentRepository.save(comment);
+    const newComment = await this.commentRepository.save(comment);
+    server.emit('createComment', { ...newComment });
   }
 
   async getAllComments() {
