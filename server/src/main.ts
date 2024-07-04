@@ -3,11 +3,13 @@ import { NestApplication, NestFactory } from '@nestjs/core';
 import { RootModule } from './root.module';
 import { Environment } from './shared/variables/environment';
 import { ResponseInterceptor } from './shared/common/interceptors';
+import * as compression from 'compression';
 
 (async () => {
   const app = await NestFactory.create(RootModule);
 
   app.enableShutdownHooks();
+  app.use(compression());
   app.setGlobalPrefix(Environment.API_PREFIX);
   app.enableCors({
     credentials: true,
