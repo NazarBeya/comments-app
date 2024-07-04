@@ -10,7 +10,7 @@ interface LoadingButtonProps extends TouchableOpacityProps  {
 export const LoadingButton: FC<LoadingButtonProps> = ({ isLoaing, title, ...rest }) => {
 
   return (
-    <TouchableOpacity {...rest} className='border border-black flex justify-center items-center rounded bg-black text-white p-2'>
+    <TouchableOpacity {...rest} className='border z-0 border-white flex justify-center items-center rounded bg-black text-white p-2'>
         {isLoaing ? <Loader/> : 
         <View className='text-white'>
             <Text className='text-white'>{title}</Text>
