@@ -5,7 +5,7 @@ import { View } from 'react-native'
 interface LoaderProps {
   style?: any
 }
-const Loader: React.FC<LoaderProps> = ({ style }) => {
+export const Loader: React.FC<LoaderProps> = ({ style }) => {
   return (
     
     <View>
@@ -22,4 +22,3 @@ const Loader: React.FC<LoaderProps> = ({ style }) => {
   )
 }
 
-export default Loader

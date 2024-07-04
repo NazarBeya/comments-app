@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
-import LoadingButton from "../../components/atoms/LoadingButton";
+import { LoadingButton } from "../../components/atoms/LoadingButton";
 
 const HomeScreen = () => {
   return (
