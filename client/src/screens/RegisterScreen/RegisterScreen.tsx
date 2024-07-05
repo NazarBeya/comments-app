@@ -6,7 +6,12 @@ import { TextField } from "../../components/atoms";
 import styles from "./RegisterScreen.style";
 import useImagePicker from "../../hooks/useImagePicker";
 import { FormProvider, useForm } from "react-hook-form";
-import { AuthFormValue, AuthSchema } from "../../../validation/AuthValidation";
+import {
+  AuthFormValue,
+  AuthSchema,
+  RegisterFormValue,
+  RegisterSchema,
+} from "../../../validation/AuthValidation";
 import { fetchRegister } from "../../services/AuthService";
 
 const RegisterScreen = () => {
@@ -20,10 +25,9 @@ const RegisterScreen = () => {
   );
 
   const methods = useForm({
-    resolver: yupResolver(AuthSchema),
+    resolver: yupResolver(RegisterSchema),
   });
-
-  const onSubmit = async (data: AuthFormValue) => {
+  const onSubmit = async (data: RegisterFormValue) => {
     if (!fileFormData) return;
     fileFormData.append("email", data.email);
     fileFormData.append("username", data.username);
@@ -32,7 +36,6 @@ const RegisterScreen = () => {
     setIsAuthLoading(true);
 
     await fetchRegister(fileFormData);
-
     setIsAuthLoading(false);
   };
 

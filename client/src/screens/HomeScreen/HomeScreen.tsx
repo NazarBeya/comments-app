@@ -1,14 +1,23 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { useGetCommentsQuery } from "../../queries/commentQueries/commentQueries";
-import { CommentList } from "../../components/molecules";
+import { LoadingButton } from "../../components/molecules";
+import useAuthStore from "../../store/AuthStore";
+import { logoutUser } from "../../services/AuthService";
 
 const HomeScreen = () => {
-  const { isLoading, responce } = useGetCommentsQuery();
+  const { setIsAuth } = useAuthStore();
 
-  if (isLoading) return null;
+  const logout = () => {
+    logoutUser();
+    setIsAuth(false);
+  };
 
-  return <>{responce && <CommentList comments={responce}></CommentList>}</>;
+  return (
+    <View>
+      <Text>HomeScreen</Text>
+      <LoadingButton title="ewqe" onPress={logout} />
+    </View>
+  );
 };
 
 export { HomeScreen };

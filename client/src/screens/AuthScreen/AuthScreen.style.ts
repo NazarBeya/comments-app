@@ -9,6 +9,16 @@ const styles = () =>
       padding: scale(18),
       justifyContent: "space-between",
     },
+    formContainer: {
+      gap: scale(10),
+    },
+    registerButton: {
+      textDecorationLine: "underline",
+      color: "blue",
+    },
+    errorStyle: {
+      
+    },
   });
 
 export default styles;
