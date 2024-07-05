@@ -20,9 +20,8 @@ const RegisterScreen = () => {
   );
 
   const methods = useForm({
-    resolver: yupResolver(AuthSchema),
+    resolver: yupResolver(RegisterSchema),
   });
-
   const onSubmit = async (data: AuthFormValue) => {
     if (!fileFormData) return;
     fileFormData.append("email", data.email);
@@ -32,7 +31,6 @@ const RegisterScreen = () => {
     setIsAuthLoading(true);
 
     await fetchRegister(fileFormData);
-
     setIsAuthLoading(false);
   };
 
