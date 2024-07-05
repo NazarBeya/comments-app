@@ -13,6 +13,10 @@ const styles = () =>
     labelStyle: {
       padding: scale(4),
     },
+    errorStyle: {
+      color: "red",
+      padding: scale(4),
+    },
   });
 
 export default styles;

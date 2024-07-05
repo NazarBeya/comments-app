@@ -13,10 +13,13 @@ import {
   RegisterSchema,
 } from "../../../validation/AuthValidation";
 import { fetchRegister } from "../../services/AuthService";
+import { useNavigation } from "@react-navigation/native";
 
 const RegisterScreen = () => {
   const { container, avatarContainer } = styles();
   const [isAuthLoading, setIsAuthLoading] = useState(false);
+
+  const navigation = useNavigation();
 
   const { pickImage, imageUri, isLoading, file, fileFormData } = useImagePicker(
     {
@@ -35,7 +38,10 @@ const RegisterScreen = () => {
 
     setIsAuthLoading(true);
 
-    await fetchRegister(fileFormData);
+    const res = await fetchRegister(fileFormData);
+    if (res?.data.token) {
+      navigation.goBack();
+    }
     setIsAuthLoading(false);
   };
 
@@ -62,7 +68,7 @@ const RegisterScreen = () => {
           <LoadingButton
             isLoaing={isAuthLoading}
             onPress={methods.handleSubmit(onSubmit)}
-            title="submit"
+            title="Register"
           />
         </FormProvider>
       </View>

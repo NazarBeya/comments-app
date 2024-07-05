@@ -23,7 +23,7 @@ const AuthScreen = () => {
 
   const { container, formContainer, registerButton } = styles();
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const methods = useForm({ resolver: yupResolver(AuthSchema) });
 
@@ -46,12 +46,10 @@ const AuthScreen = () => {
     if (data === "User not found") {
       setError(data);
       setIsLoading(false);
-    }
-    if (data === "Invalid password") {
+    } else if (data === "Invalid password") {
       setError(data);
       setIsLoading(false);
-    }
-    if (data) {
+    } else {
       setIsLoading(false);
       setIsAuth(true);
     }

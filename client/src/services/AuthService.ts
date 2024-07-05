@@ -36,9 +36,8 @@ export const fetchLogin = async (data: { email: string; password: string }) => {
       ASYNC_STORAGE_KEYS.USER_KEY,
       JSON.stringify(response.data.user)
     );
-
     return response;
-  } catch (error) {
+  } catch (error: any) {
     return error.response.data.message;
   }
 };

@@ -20,9 +20,8 @@ const HomeScreen = () => {
   return (
     <View>
       <Text>HomeScreen</Text>
-      {responce && <CommentList comments={responce} />}
-
       <LoadingButton title="ewqe" onPress={logout} />
+      {responce && <CommentList comments={responce} />}
     </View>
   );
 };

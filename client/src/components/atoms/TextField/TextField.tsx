@@ -15,7 +15,7 @@ const TextField: FC<TextFieldProps> = ({
   isControled = false,
   ...rest
 }) => {
-  const { fieldStyle, labelStyle } = styles();
+  const { fieldStyle, labelStyle, errorStyle } = styles();
 
   if (!isControled)
     return (
@@ -28,7 +28,10 @@ const TextField: FC<TextFieldProps> = ({
     );
 
   if (isControled) {
-    const { control } = useFormContext();
+    const {
+      control,
+      formState: { errors },
+    } = useFormContext();
 
     return (
       <Controller
@@ -43,6 +46,9 @@ const TextField: FC<TextFieldProps> = ({
               onChangeText={onChange}
               style={fieldStyle}
             />
+            {errors[name] && (
+              <Text style={errorStyle}>{errors[name]?.message as string}</Text>
+            )}
           </View>
         )}
       />
