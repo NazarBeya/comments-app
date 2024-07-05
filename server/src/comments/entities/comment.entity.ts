@@ -15,6 +15,9 @@ export class CommentEntity extends BaseEntity {
   @Column()
   content: string;
 
+  @Column({ nullable: true })
+  parentId: number;
+
   @ManyToOne(() => UserEntity)
   author: UserEntity;
 

@@ -34,6 +34,7 @@ export class CommentsService {
     const comment = new CommentEntity();
     comment.content = content;
     comment.author = author;
+    comment.parentId = parentId;
 
     if (parentId) {
       const parentComment = await this.commentRepository.findOneBy({

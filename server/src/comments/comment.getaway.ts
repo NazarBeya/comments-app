@@ -12,7 +12,7 @@ import { SocketCtx } from 'src/auth/decorators/socket-ctx.decorator';
 import { CommentsService } from './comments.service';
 
 @UseGuards(WebSocketAuthGuard)
-@WebSocketGateway({
+@WebSocketGateway(8001, {
   cors: {
     origin: '*',
     credentials: true,
