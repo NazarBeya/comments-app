@@ -42,7 +42,7 @@ const TextField: FC<TextFieldProps> = ({
                 {...rest}
                 value={value}
                 onChangeText={onChange}
-                style={labelStyle}
+                style={fieldStyle}
               />
             </View>
           )}

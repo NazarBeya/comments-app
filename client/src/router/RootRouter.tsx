@@ -11,12 +11,12 @@ const RootRouter = () => {
   return (
     <NavigationContainer>
       <RootStack.Navigator>
+        <RootStack.Screen name={RouterNames.AUTH} component={AuthScreen} />
         <RootStack.Screen
           name={RouterNames.REGISTER}
           component={RegisterScreen}
         />
         <RootStack.Screen name={RouterNames.HOME} component={HomeScreen} />
-        <RootStack.Screen name={RouterNames.AUTH} component={AuthScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );
