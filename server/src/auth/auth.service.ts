@@ -2,11 +2,12 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
-import { AuthDto } from './dtos/auth.dto';
+import { RegisterDto } from './dtos/register.dto';
 import { genSalt, hash, compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { Environment } from 'src/shared/variables/environment';
 import { FileService, fileType } from 'src/file/file.service';
+import { LoginDto } from './dtos/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,7 @@ export class AuthService {
     private readonly fileService: FileService,
   ) {}
 
-  async register(dto: AuthDto, file: Express.Multer.File) {
+  async register(dto: RegisterDto, file: Express.Multer.File) {
     console.log(dto);
     console.log(file);
 
@@ -51,9 +52,9 @@ export class AuthService {
     };
   }
 
-  async login(dto: AuthDto) {
-    const { email, password, username } = dto;
-    const user = await this.userRepository.findOneBy({ email, username });
+  async login(dto: LoginDto) {
+    const { email, password } = dto;
+    const user = await this.userRepository.findOneBy({ email });
 
     if (!user) {
       throw new BadRequestException('User not found');

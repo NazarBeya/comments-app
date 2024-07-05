@@ -14,6 +14,7 @@ export const fetchRegister = async (formData: FormData) => {
       response.data.token
     );
 
+    console.log(response.data);
     return response;
   } catch (error) {
     console.log(error);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Text, View } from "react-native";
 import { AvatarButton, LoadingButton } from "../../components/molecules";
@@ -7,11 +7,11 @@ import styles from "./RegisterScreen.style";
 import useImagePicker from "../../hooks/useImagePicker";
 import { FormProvider, useForm } from "react-hook-form";
 import { AuthFormValue, AuthSchema } from "../../../validation/AuthValidation";
-import { useRegisterQuery } from "../../queries/authQueries/authQueries";
 import { fetchRegister } from "../../services/AuthService";
 
 const RegisterScreen = () => {
   const { container, avatarContainer } = styles();
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
 
   const { pickImage, imageUri, isLoading, file, fileFormData } = useImagePicker(
     {
@@ -23,17 +23,17 @@ const RegisterScreen = () => {
     resolver: yupResolver(AuthSchema),
   });
 
-  const onSubmit = (data: AuthFormValue) => {
-    const formData = new FormData();
-    if (fileFormData) {
-      formData.append("userAvatar", file);
-    }
-    formData.append("email", data.email);
-    formData.append("username", data.username);
-    formData.append("password", data.password);
+  const onSubmit = async (data: AuthFormValue) => {
+    if (!fileFormData) return;
+    fileFormData.append("email", data.email);
+    fileFormData.append("username", data.username);
+    fileFormData.append("password", data.password);
 
-    console.log(data);
-    fetchRegister(formData);
+    setIsAuthLoading(true);
+
+    await fetchRegister(fileFormData);
+
+    setIsAuthLoading(false);
   };
 
   useEffect(() => {
@@ -57,6 +57,7 @@ const RegisterScreen = () => {
           <TextField label="Email" isControled name="email" />
           <TextField label="Password" isControled name="password" />
           <LoadingButton
+            isLoaing={isAuthLoading}
             onPress={methods.handleSubmit(onSubmit)}
             title="submit"
           />
