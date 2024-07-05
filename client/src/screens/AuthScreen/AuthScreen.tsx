@@ -2,9 +2,9 @@ import React, { useMemo } from "react";
 import { Text, View } from "react-native";
 import styles from "./AuthScreen.style";
 import { TextField } from "../../components/atoms";
-import { LoadingButton } from "../../components/atoms/LoadingButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FormProvider, useForm } from "react-hook-form";
+import { LoadingButton } from "../../components/molecules";
 
 const AuthFromValues = {
   email: "",
