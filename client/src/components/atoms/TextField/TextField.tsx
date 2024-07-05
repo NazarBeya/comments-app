@@ -31,23 +31,21 @@ const TextField: FC<TextFieldProps> = ({
     const { control } = useFormContext();
 
     return (
-      <>
-        <Controller
-          name={name}
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <View>
-              {label && <Text style={labelStyle}>{label}</Text>}
-              <TextInput
-                {...rest}
-                value={value}
-                onChangeText={onChange}
-                style={labelStyle}
-              />
-            </View>
-          )}
-        />
-      </>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <View>
+            {label && <Text style={labelStyle}>{label}</Text>}
+            <TextInput
+              {...rest}
+              value={value}
+              onChangeText={onChange}
+              style={fieldStyle}
+            />
+          </View>
+        )}
+      />
     );
   }
 };
