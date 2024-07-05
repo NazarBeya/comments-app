@@ -17,6 +17,9 @@ export class AuthService {
   ) {}
 
   async register(dto: AuthDto, file: Express.Multer.File) {
+    console.log(dto);
+    console.log(file);
+
     const { email, username, password } = dto;
 
     const isUserExist = await this.userRepository.findOneBy([

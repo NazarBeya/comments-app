@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import styles from "./LoadingButton.style";
-import { Loader } from "../../atoms";
+import { LoaderLight } from "../../atoms";
 
 interface LoadingButtonProps extends TouchableOpacityProps {
   title: string;
@@ -22,7 +22,7 @@ export const LoadingButton: FC<LoadingButtonProps> = ({
   return (
     <TouchableOpacity {...rest} style={container}>
       {isLoaing ? (
-        <Loader />
+        <LoaderLight />
       ) : (
         <View>
           <Text style={titleStyle}>{title}</Text>

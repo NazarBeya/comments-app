@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 const HomeScreen = () => {
   return (
     <View>
-      <Text className="font-extrabold">HomeScreen</Text>
+      <Text>HomeScreen</Text>
     </View>
   );
 };

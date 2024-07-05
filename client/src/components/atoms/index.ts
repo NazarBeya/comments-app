@@ -1,2 +1,3 @@
 export { TextField } from "./TextField/TextField";
-export { Loader } from "./Loader";
+export { LoaderLight } from "./LoaderLight";
+export { LoaderDark } from "./LoaderDark";
