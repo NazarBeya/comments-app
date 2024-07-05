@@ -20,11 +20,7 @@ export const fetchRegister = async (formData: FormData) => {
   }
 };
 
-export const fetchLogin = async (data: {
-  email: string;
-  password: string;
-  username: string;
-}) => {
+export const fetchLogin = async (data: { email: string; password: string }) => {
   const response = await $api.post<{ user: TUser; token: string }>(
     "/auth/login",
     data
