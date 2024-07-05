@@ -16,6 +16,9 @@ const styles = () =>
       textDecorationLine: "underline",
       color: "blue",
     },
+    errorStyle: {
+      
+    },
   });
 
 export default styles;
