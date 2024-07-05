@@ -6,8 +6,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dtos/auth.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { RegisterDto } from './dtos/register.dto';
+import { LoginDto } from './dtos/login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -15,13 +16,15 @@ export class AuthController {
 
   @Post('register')
   @UseInterceptors(FileInterceptor('userAvatar'))
-  register(@Body() dto: AuthDto, @UploadedFile() file: Express.Multer.File) {
-
+  register(
+    @Body() dto: RegisterDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
     return this.authService.register(dto, file);
   }
 
   @Post('login')
-  login(@Body() dto: AuthDto) {
+  login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
 }

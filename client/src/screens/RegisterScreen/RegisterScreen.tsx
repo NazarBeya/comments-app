@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Text, View } from "react-native";
 import { AvatarButton, LoadingButton } from "../../components/molecules";
@@ -6,15 +6,12 @@ import { TextField } from "../../components/atoms";
 import styles from "./RegisterScreen.style";
 import useImagePicker from "../../hooks/useImagePicker";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  RegisterFormValue,
-  RegisterSchema,
-} from "../../../validation/AuthValidation";
-import { useRegisterQuery } from "../../queries/authQueries/authQueries";
+import { AuthFormValue, AuthSchema } from "../../../validation/AuthValidation";
 import { fetchRegister } from "../../services/AuthService";
 
 const RegisterScreen = () => {
   const { container, avatarContainer } = styles();
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
 
   const { pickImage, imageUri, isLoading, file, fileFormData } = useImagePicker(
     {
@@ -25,18 +22,16 @@ const RegisterScreen = () => {
   const methods = useForm({
     resolver: yupResolver(RegisterSchema),
   });
+  const onSubmit = async (data: AuthFormValue) => {
+    if (!fileFormData) return;
+    fileFormData.append("email", data.email);
+    fileFormData.append("username", data.username);
+    fileFormData.append("password", data.password);
 
-  const onSubmit = (data: RegisterFormValue) => {
-    const formData = new FormData();
-    if (fileFormData) {
-      formData.append("userAvatar", file);
-    }
-    formData.append("email", data.email);
-    formData.append("username", data.username);
-    formData.append("password", data.password);
+    setIsAuthLoading(true);
 
-    console.log(data);
-    fetchRegister(formData);
+    await fetchRegister(fileFormData);
+    setIsAuthLoading(false);
   };
 
   useEffect(() => {
@@ -60,6 +55,7 @@ const RegisterScreen = () => {
           <TextField label="Email" isControled name="email" />
           <TextField label="Password" isControled name="password" />
           <LoadingButton
+            isLoaing={isAuthLoading}
             onPress={methods.handleSubmit(onSubmit)}
             title="submit"
           />
